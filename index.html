@@ -447,8 +447,8 @@ section:nth-child(even){background:var(--bg2);}
 #reviews{background:var(--bg);}
 .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
 .rev{
-  padding:40px 34px;background:var(--bg2);
-  border:1px solid var(--border);border-radius:var(--r);
+  padding:40px 34px;background:#181828;
+  border:1px solid rgba(124,106,255,0.2);border-radius:var(--r);
   position:relative;overflow:hidden;
   transition:all .5s var(--ease);
 }
@@ -461,7 +461,7 @@ section:nth-child(even){background:var(--bg2);}
 .rev:hover{border-color:rgba(124,106,255,0.25);transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 40px rgba(124,106,255,0.06);}
 .rev-stars{display:flex;gap:3px;margin-bottom:16px;}
 .rev-stars span{color:var(--acc);font-size:12px;}
-.rev-text{font-size:14px;line-height:1.9;color:var(--dim);font-style:italic;margin-bottom:26px;}
+.rev-text{font-size:14px;line-height:1.9;color:rgba(245,245,240,0.82);font-style:italic;margin-bottom:26px;}
 .rev-author{display:flex;align-items:center;gap:12px;}
 .rev-av{
   width:40px;height:40px;border-radius:50%;
@@ -644,6 +644,353 @@ footer{
 .parallax-slow{will-change:transform;}
 .parallax-fast{will-change:transform;}
 
+/* SCROLL PROGRESS BAR */
+#scroll-prog{
+  position:fixed;top:0;left:0;z-index:99999;
+  height:3px;width:0%;
+  background:linear-gradient(90deg,#5e4fff,#7c6aff,#a78bff);
+  box-shadow:0 0 12px rgba(124,106,255,0.7);
+  pointer-events:none;
+}
+
+/* GRADIENT MESH CANVAS */
+#meshCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0.5;}
+
+/* FLOATING BOOK BUTTON */
+#float-cta{
+  position:fixed;bottom:32px;right:32px;z-index:9000;
+  display:flex;align-items:center;gap:10px;
+  padding:14px 24px;border-radius:50px;
+  background:var(--acc);color:#080808;
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;
+  text-decoration:none;
+  box-shadow:0 8px 32px rgba(124,106,255,0.45);
+  transition:all .4s var(--ease);
+  transform:translateY(120px);opacity:0;
+}
+#float-cta:hover{box-shadow:0 16px 48px rgba(124,106,255,0.6);}
+#float-cta.show{transform:translateY(0);opacity:1;}
+.float-dot{width:8px;height:8px;border-radius:50%;background:#080808;opacity:.5;animation:dpulse 2s ease infinite;}
+@media(max-width:768px){#float-cta{bottom:20px;right:16px;padding:12px 18px;font-size:11px;}}
+
+/* TYPEWRITER */
+#typewriter{color:var(--acc);border-right:3px solid var(--acc);padding-right:4px;animation:blink .7s step-end infinite;}
+@keyframes blink{0%,100%{border-color:var(--acc);}50%{border-color:transparent;}}
+
+/* TECH STACK */
+#techstack{background:var(--bg2);overflow:hidden;}
+.tech-grid{
+  display:flex;flex-wrap:wrap;gap:14px;
+  justify-content:center;margin-top:10px;
+}
+.tech-chip{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 24px;border-radius:50px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
+  color:rgba(245,245,240,0.5);letter-spacing:.5px;
+  position:relative;overflow:hidden;
+  /* start state */
+  opacity:0;
+  transform:translateY(40px) scale(0.85);
+  transition:
+    opacity .5s var(--ease),
+    transform .5s var(--ease),
+    border-color .4s,
+    color .4s,
+    background .4s,
+    box-shadow .4s;
+}
+/* shimmer sweep on each chip */
+.tech-chip::before{
+  content:"";
+  position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 35%,rgba(124,106,255,0.18) 50%,transparent 65%);
+  transform:translateX(-100%);
+  transition:transform 0s;
+}
+.tech-chip.vis{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+.tech-chip.vis::before{
+  animation:chipShimmer 2.5s var(--ease) forwards;
+}
+@keyframes chipShimmer{
+  0%{transform:translateX(-100%);}
+  100%{transform:translateX(200%);}
+}
+.tech-chip:hover{
+  border-color:rgba(124,106,255,0.6);
+  color:var(--text);
+  background:rgba(124,106,255,0.1);
+  transform:translateY(-5px) scale(1.05);
+  box-shadow:0 10px 35px rgba(124,106,255,0.2),0 0 0 1px rgba(124,106,255,0.3);
+}
+.tech-chip:hover .icon{animation:iconBounce .4s var(--ease);}
+@keyframes iconBounce{
+  0%{transform:scale(1);}
+  45%{transform:scale(1.4) rotate(-8deg);}
+  100%{transform:scale(1) rotate(0deg);}
+}
+.tech-chip .icon{font-size:20px;display:inline-block;transition:transform .3s;}
+
+/* FAQ */
+#faq{background:var(--bg);}
+.faq-list{max-width:800px;margin:0 auto;display:flex;flex-direction:column;gap:2px;}
+.faq-item{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--bg2);transition:border-color .4s,margin .3s;}
+.faq-item.open{border-color:rgba(124,106,255,0.4);margin:8px 0;}
+.faq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;
+  padding:24px 28px;background:none;border:none;cursor:pointer;
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:700;
+  color:var(--text);text-align:left;gap:16px;transition:color .3s;
+}
+.faq-q:hover{color:var(--acc);}
+.faq-item.open .faq-q{color:var(--acc);}
+.faq-icon{
+  flex-shrink:0;width:28px;height:28px;border-radius:50%;
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--dim);transition:all .4s var(--ease);line-height:1;
+}
+.faq-item.open .faq-icon{background:var(--acc);border-color:var(--acc);color:#080808;transform:rotate(45deg);}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .5s var(--ease),padding .4s;padding:0 28px;}
+.faq-item.open .faq-a{max-height:220px;padding:0 28px 24px;}
+.faq-a p{font-size:14px;color:rgba(245,245,240,0.7);line-height:1.85;}
+
+/* ══════════════════════════════════════════════
+   RESULTS TICKER
+══════════════════════════════════════════════ */
+#results-ticker{
+  position:relative;z-index:10;
+  background:var(--bg3);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  padding:0;overflow:hidden;
+}
+.rticker-inner{
+  display:flex;align-items:stretch;
+}
+.rticker-label{
+  flex-shrink:0;
+  padding:14px 28px;
+  background:var(--acc);
+  color:#080808;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:800;
+  letter-spacing:3px;text-transform:uppercase;
+  display:flex;align-items:center;gap:8px;
+  z-index:2;
+}
+.rticker-dot{width:7px;height:7px;border-radius:50%;background:#080808;opacity:.5;animation:dpulse 2s infinite;}
+.rticker-track-wrap{overflow:hidden;flex:1;}
+.rticker-track{
+  display:flex;white-space:nowrap;
+  animation:rtick 35s linear infinite;
+  padding:14px 0;
+}
+.rticker-track span{
+  padding-right:70px;
+  font-family:'Syne',sans-serif;font-size:12px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;
+  color:rgba(245,245,240,0.55);
+}
+.rticker-track span strong{color:var(--acc);font-weight:800;}
+@keyframes rtick{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+/* ══════════════════════════════════════════════
+   BEFORE & AFTER
+══════════════════════════════════════════════ */
+#beforeafter{background:var(--bg2);}
+.ba-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:2px;border:1px solid var(--border);
+  border-radius:var(--r);overflow:hidden;
+  background:var(--border);
+}
+.ba-col{
+  padding:52px 44px;
+  background:var(--bg2);
+  position:relative;
+  overflow:hidden;
+}
+.ba-col.after{background:rgba(124,106,255,0.04);}
+.ba-col.after::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(124,106,255,0.07),transparent 60%);
+  pointer-events:none;
+}
+.ba-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:4px;text-transform:uppercase;
+  padding:6px 16px;border-radius:4px;margin-bottom:32px;
+}
+.ba-tag.before-tag{background:rgba(255,255,255,0.06);color:var(--dim);}
+.ba-tag.after-tag{background:rgba(124,106,255,0.15);color:var(--acc);}
+.ba-tag .dot{width:6px;height:6px;border-radius:50%;}
+.ba-tag.before-tag .dot{background:var(--dim);}
+.ba-tag.after-tag .dot{background:var(--acc);box-shadow:0 0 8px var(--acc);}
+.ba-items{display:flex;flex-direction:column;gap:14px;}
+.ba-item{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:16px 18px;border-radius:10px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  font-size:13px;color:var(--dim);line-height:1.6;
+  opacity:0;transform:translateX(-20px);
+  transition:opacity .5s var(--ease),transform .5s var(--ease);
+}
+.ba-col.after .ba-item{transform:translateX(20px);}
+.ba-item.vis{opacity:1;transform:translateX(0);}
+.ba-item-icon{
+  font-size:18px;flex-shrink:0;margin-top:1px;
+}
+.ba-col.before .ba-item-icon{filter:grayscale(1);opacity:.5;}
+.ba-item-text strong{
+  display:block;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:700;
+  color:var(--text);margin-bottom:3px;
+}
+.ba-col.after .ba-item{
+  border-color:rgba(124,106,255,0.12);
+  background:rgba(124,106,255,0.05);
+}
+.ba-col.after .ba-item-text strong{color:var(--acc);}
+.ba-divider{
+  position:absolute;top:0;bottom:0;
+  left:50%;transform:translateX(-50%);
+  width:2px;background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+  z-index:5;
+}
+.ba-vs{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:800;
+  color:var(--dim);letter-spacing:1px;
+}
+@media(max-width:768px){
+  .ba-grid{grid-template-columns:1fr;}
+  .ba-divider{display:none;}
+}
+
+/* ══════════════════════════════════════════════
+   LIVE CHAT WIDGET
+══════════════════════════════════════════════ */
+#chat-widget{
+  position:fixed;bottom:32px;left:32px;z-index:9001;
+  display:flex;flex-direction:column;align-items:flex-start;gap:12px;
+}
+.chat-bubble{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:16px 16px 16px 4px;
+  padding:14px 20px;max-width:260px;
+  font-size:13px;color:var(--text);line-height:1.6;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transform:translateY(20px) scale(.9);opacity:0;
+  transition:all .5s var(--ease);
+}
+.chat-bubble.show{transform:translateY(0) scale(1);opacity:1;}
+.chat-bubble strong{color:var(--acc);display:block;margin-bottom:4px;font-family:'Syne',sans-serif;font-size:12px;letter-spacing:1px;}
+#chat-btn{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 22px;border-radius:50px;
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text);font-family:'Syne',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:1px;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 8px 32px rgba(124,106,255,0.25);
+  transition:all .4s var(--ease);
+  transform:translateY(80px);opacity:0;
+}
+#chat-btn.show{transform:translateY(0);opacity:1;}
+#chat-btn:hover{background:var(--acc);color:#080808;border-color:var(--acc);box-shadow:0 12px 40px rgba(124,106,255,0.4);transform:translateY(-3px);}
+.chat-avatar{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--acc),#5e4fff);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;flex-shrink:0;
+}
+.chat-online{
+  width:9px;height:9px;border-radius:50%;
+  background:#22c55e;box-shadow:0 0 8px #22c55e;
+  flex-shrink:0;
+}
+@media(max-width:768px){
+  #chat-widget{bottom:20px;left:16px;}
+  .chat-bubble{max-width:220px;font-size:12px;}
+}
+
+/* ══════════════════════════════════════════════
+   EXIT INTENT POPUP
+══════════════════════════════════════════════ */
+#exit-overlay{
+  display:none;position:fixed;inset:0;z-index:99990;
+  background:rgba(0,0,0,0.85);backdrop-filter:blur(12px);
+  align-items:center;justify-content:center;padding:20px;
+}
+#exit-overlay.show{display:flex;}
+#exit-popup{
+  background:var(--bg3);border:1px solid rgba(124,106,255,0.35);
+  border-radius:20px;padding:56px 52px;
+  max-width:540px;width:100%;position:relative;
+  text-align:center;
+  box-shadow:0 32px 80px rgba(0,0,0,.6),0 0 60px rgba(124,106,255,0.1);
+  transform:scale(.9) translateY(30px);opacity:0;
+  transition:all .5s var(--ease);
+}
+#exit-overlay.show #exit-popup{transform:scale(1) translateY(0);opacity:1;}
+.exit-close{
+  position:absolute;top:20px;right:24px;
+  background:none;border:none;cursor:pointer;
+  color:var(--dim);font-size:22px;
+  font-family:'Syne',sans-serif;font-weight:800;
+  transition:color .3s;line-height:1;
+}
+.exit-close:hover{color:var(--text);}
+.exit-emoji{font-size:52px;display:block;margin-bottom:20px;}
+.exit-tag{
+  display:inline-block;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:800;
+  letter-spacing:4px;text-transform:uppercase;
+  color:var(--acc);border:1px solid rgba(124,106,255,0.3);
+  padding:5px 16px;border-radius:4px;margin-bottom:20px;
+}
+.exit-h{
+  font-family:'Syne',sans-serif;font-size:clamp(24px,4vw,34px);
+  font-weight:800;letter-spacing:-1px;line-height:1.1;
+  margin-bottom:14px;color:var(--text);
+}
+.exit-h span{color:var(--acc);}
+.exit-p{font-size:14px;color:var(--dim);line-height:1.8;margin-bottom:36px;}
+.exit-offer{
+  background:rgba(124,106,255,0.08);border:1px solid rgba(124,106,255,0.2);
+  border-radius:12px;padding:20px 24px;margin-bottom:32px;
+  display:flex;align-items:center;gap:16px;text-align:left;
+}
+.exit-offer-icon{font-size:28px;flex-shrink:0;}
+.exit-offer-text{font-size:13px;color:var(--dim);line-height:1.6;}
+.exit-offer-text strong{display:block;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px;}
+.exit-btns{display:flex;flex-direction:column;gap:10px;}
+.exit-cta{
+  display:block;padding:15px;border-radius:8px;
+  background:var(--acc);color:#080808;
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;transition:all .4s var(--ease);
+}
+.exit-cta:hover{box-shadow:0 12px 40px rgba(124,106,255,0.35);transform:translateY(-2px);}
+.exit-skip{
+  background:none;border:none;cursor:pointer;
+  font-size:12px;color:var(--dim2);
+  font-family:'DM Sans',sans-serif;
+  transition:color .3s;
+}
+.exit-skip:hover{color:var(--dim);}
+
 /* ══════════════════════════════════════════════
    RESPONSIVE
 ══════════════════════════════════════════════ */
@@ -689,6 +1036,17 @@ footer{
 </style>
 </head>
 <body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-prog"></div>
+
+<!-- MESH CANVAS -->
+<canvas id="meshCanvas"></canvas>
+
+<!-- FLOATING CTA -->
+<a href="https://cal.com/hamza-khalil-expyr5/meeting-for-automations" target="_blank" id="float-cta">
+  <div class="float-dot"></div>Book a Call
+</a>
 
 <!-- CURSOR -->
 <div id="cur"></div>
@@ -763,7 +1121,7 @@ footer{
     <div class="hero-badge" id="hbadge"><div class="badge-dot"></div>Available for new projects — 2026</div>
     <h1 class="hero-h1">
       <span class="row"><span class="row-inner">We Build</span></span>
-      <span class="row"><span class="row-inner acc">AI Systems</span></span>
+      <span class="row"><span class="row-inner"><span id="typewriter"></span></span></span>
       <span class="row"><span class="row-inner outline">That Scale.</span></span>
     </h1>
     <p class="hero-sub" id="hsub">Enterprise-grade workflow automation, intelligent chatbots and voice agents — engineered to eliminate manual work and maximise your ROI from day one.</p>
@@ -890,6 +1248,175 @@ footer{
       <div class="acard"><div class="acard-n"><span class="counter" data-t="50" data-s="+">0</span></div><div class="acard-l">Projects</div></div>
       <div class="acard"><div class="acard-n"><span class="counter" data-t="2" data-s="+">0</span></div><div class="acard-l">Years Exp</div></div>
       <div class="acard"><div class="acard-n"><span class="counter" data-t="6" data-s="">0</span></div><div class="acard-l">Platforms</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ TECH STACK ═══════════ -->
+<section id="techstack">
+  <div class="sec-eyebrow" id="sey7"><span>Tools We Use</span></div>
+  <h2 class="sec-h" id="sh7"><span class="line">Our Tech</span><span class="line"><span class="acc">Stack</span></span></h2>
+  <div class="tech-grid" id="techGrid">
+
+    <!-- n8n -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 7.5A4.5 4.5 0 1 1 12.09 6H12a4.5 4.5 0 0 1-4.5 4.5H6a4.5 4.5 0 1 1 0-9h.09A4.501 4.501 0 0 1 12 3h.09A4.501 4.501 0 0 1 21 7.5Z" fill="#EA4B71"/><path d="M16.5 16.5a4.5 4.5 0 1 1-8.91-1.5H12a4.5 4.5 0 0 0 4.5-4.5V9a4.5 4.5 0 0 1 0 9v-1.5Z" fill="#EA4B71"/></svg></span>n8n
+    </div>
+
+    <!-- Make.com -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#6D00CC"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="900" fill="white" font-family="Arial">M</text></svg></span>Make.com
+    </div>
+
+    <!-- OpenAI -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M22.28 9.78a5.76 5.76 0 0 0-.49-4.73 5.82 5.82 0 0 0-6.27-2.79A5.76 5.76 0 0 0 11.2 .54a5.82 5.82 0 0 0-5.55 4.03 5.76 5.76 0 0 0-3.84 2.8 5.82 5.82 0 0 0 .72 6.84 5.76 5.76 0 0 0 .49 4.73 5.82 5.82 0 0 0 6.27 2.79 5.76 5.76 0 0 0 4.32 1.72 5.82 5.82 0 0 0 5.55-4.04 5.76 5.76 0 0 0 3.84-2.8 5.82 5.82 0 0 0-.72-6.83zm-8.65 12.12a4.3 4.3 0 0 1-2.76-1c.03-.02.09-.05.13-.07l4.58-2.64a.74.74 0 0 0 .38-.65V11.3l1.94 1.12a.07.07 0 0 1 .04.05v5.34a4.32 4.32 0 0 1-4.31 4.1zM3.7 17.65a4.3 4.3 0 0 1-.52-2.89l.14.08 4.58 2.64a.75.75 0 0 0 .75 0l5.59-3.23v2.24a.08.08 0 0 1-.03.06L9.56 19.2a4.32 4.32 0 0 1-5.86-1.55zM2.4 8.44a4.3 4.3 0 0 1 2.25-1.9v5.42a.74.74 0 0 0 .38.65l5.58 3.22-1.93 1.12a.08.08 0 0 1-.07 0L4.05 14.3A4.32 4.32 0 0 1 2.4 8.44zm15.9 3.7-5.58-3.23 1.93-1.12a.08.08 0 0 1 .07 0l4.56 2.63a4.32 4.32 0 0 1-.67 7.79V12.8a.74.74 0 0 0-.31-.66zm1.92-2.9-.13-.08-4.58-2.64a.76.76 0 0 0-.75 0L9.18 9.75V7.51a.07.07 0 0 1 .03-.06l4.56-2.63a4.32 4.32 0 0 1 6.45 4.48zM8.15 12.86 6.2 11.74a.07.07 0 0 1-.03-.05V6.35a4.32 4.32 0 0 1 7.09-3.3l-.13.07-4.58 2.64a.75.75 0 0 0-.38.65l-.02 6.45zm1.05-2.26 2.49-1.44 2.49 1.43v2.87l-2.49 1.44-2.49-1.44V10.6z"/></svg></span>OpenAI
+    </div>
+
+    <!-- Vapi.ai -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#5B21B6"/><text x="12" y="16.5" text-anchor="middle" font-size="9" font-weight="900" fill="white" font-family="Arial">VAPI</text></svg></span>Vapi.ai
+    </div>
+
+    <!-- Voiceflow -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#1A56DB"/><path d="M7 8l5 8 5-8H7z" fill="white"/></svg></span>Voiceflow
+    </div>
+
+    <!-- GoHighLevel -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#0C7C59"/><text x="12" y="16" text-anchor="middle" font-size="10" font-weight="900" fill="white" font-family="Arial">GHL</text></svg></span>GoHighLevel
+    </div>
+
+    <!-- Airtable -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="5" fill="#FCB400"/><rect x="4" y="5" width="7" height="7" rx="1" fill="white"/><rect x="13" y="5" width="7" height="4" rx="1" fill="white"/><rect x="4" y="14" width="7" height="5" rx="1" fill="white" opacity=".7"/><rect x="13" y="11" width="7" height="8" rx="1" fill="white" opacity=".7"/></svg></span>Airtable
+    </div>
+
+    <!-- Gmail -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M24 5.46v13.08A2.46 2.46 0 0 1 21.54 21H2.46A2.46 2.46 0 0 1 0 18.54V5.46A2.46 2.46 0 0 1 2.46 3h19.08A2.46 2.46 0 0 1 24 5.46z" fill="#EA4335"/><path d="M24 5.46L12 13.5 0 5.46A2.46 2.46 0 0 1 2.46 3h19.08A2.46 2.46 0 0 1 24 5.46z" fill="#FBBC04"/><path d="M24 5.46v13.08A2.46 2.46 0 0 1 21.54 21H12V13.5L24 5.46z" fill="#34A853"/><path d="M0 5.46v13.08A2.46 2.46 0 0 0 2.46 21H12V13.5L0 5.46z" fill="#4285F4"/><path d="M12 13.5L0 5.46h24L12 13.5z" fill="#EA4335"/></svg></span>Gmail API
+    </div>
+
+    <!-- Slack -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zM6.313 15.165a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zM8.834 6.313a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zM18.956 8.834a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zM17.688 8.834a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zM15.165 18.956a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zM15.165 17.688a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z" fill="#E01E5A"/></svg></span>Slack
+    </div>
+
+    <!-- Relivence.ai -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#7C3AED"/><circle cx="12" cy="12" r="5" fill="none" stroke="white" stroke-width="2"/><circle cx="12" cy="12" r="2" fill="white"/></svg></span>Relivence.ai
+    </div>
+
+    <!-- Zapier -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M24 12.005a11.995 11.995 0 1 1-24 0 11.995 11.995 0 0 1 24 0z" fill="#FF4A00"/><path d="M14.83 10.075l-.612-1.674 2.347-1.738-2.196-.008-.615-1.674-1.74 2.34-1.735-2.34-.614 1.674-2.198.008 2.347 1.738-.613 1.674 1.878-.55v2.178L9.26 12 7.199 12.3l.613 1.674L5.465 15.71l2.198-.007.614 1.674 1.735-2.34 1.74 2.34.614-1.674 2.197.007-2.347-1.737.612-1.674-1.876-.55V11.57l1.876-.546 1.876.546v2.178l-1.876.55.612 1.674-2.347 1.737 2.197-.007.614 1.674 1.74-2.34 1.735 2.34.614-1.674 2.198.007-2.347-1.737.612-1.674-2.062-.299-.013-.003-1.876-.546v-2.178l1.876.549 2.063-.3z" fill="white"/></svg></span>Zapier
+    </div>
+
+    <!-- WhatsApp -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" fill="#25D366"/></svg></span>WhatsApp API
+    </div>
+
+    <!-- Notion -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z" fill="#000000"/></svg></span>Notion
+    </div>
+
+    <!-- Typeform -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><rect width="24" height="24" rx="6" fill="#262627"/><path d="M6 8h12M6 12h8M6 16h10" stroke="#white" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="12" r="2" fill="#0445AF"/></svg></span>Typeform
+    </div>
+
+    <!-- Stripe -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M13.976 9.15c-2.172-.806-3.356-1.426-3.356-2.409 0-.831.683-1.305 1.901-1.305 2.227 0 4.515.858 6.09 1.631l.89-5.494C18.252.975 15.697 0 12.165 0 9.667 0 7.589.654 6.104 1.872 4.56 3.147 3.757 4.992 3.757 7.218c0 4.039 2.467 5.76 6.476 7.219 2.585.92 3.445 1.574 3.445 2.583 0 .98-.84 1.545-2.354 1.545-1.875 0-4.965-.921-6.99-2.109l-.9 5.555C5.175 22.99 8.385 24 11.714 24c2.641 0 4.843-.624 6.328-1.813 1.664-1.305 2.525-3.236 2.525-5.732 0-4.128-2.524-5.851-6.594-7.305h.003z" fill="#6772E5"/></svg></span>Stripe API
+    </div>
+
+    <!-- Twilio -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zm0 20.786c-4.846 0-8.786-3.94-8.786-8.786S7.154 3.214 12 3.214 20.786 7.154 20.786 12 16.846 20.786 12 20.786zm3.214-10.714a1.607 1.607 0 1 0 0-3.214 1.607 1.607 0 0 0 0 3.214zm0 5.357a1.607 1.607 0 1 0 0-3.214 1.607 1.607 0 0 0 0 3.214zm-6.428 0a1.607 1.607 0 1 0 0-3.214 1.607 1.607 0 0 0 0 3.214zm0-5.357a1.607 1.607 0 1 0 0-3.214 1.607 1.607 0 0 0 0 3.214z" fill="#F22F46"/></svg></span>Twilio
+    </div>
+
+    <!-- HubSpot -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M22.162 5.656a8.384 8.384 0 0 0-3.804-3.417l-1.86 1.86A6.15 6.15 0 0 1 18.36 5.74l-6.055 6.055-2.273-2.272a1.96 1.96 0 0 0-.2-2.469 1.963 1.963 0 1 0-.002 2.775l.001.001 2.47 2.47-7.03 7.03a1.96 1.96 0 0 0 .002 2.772 1.96 1.96 0 0 0 2.77 0l7.032-7.031 2.47 2.47a1.964 1.964 0 0 0 2.772-2.773l-2.273-2.272 6.055-6.056a8.4 8.4 0 0 0 .864-3.11 8.383 8.383 0 0 0-2.949-3.806z" fill="#FF7A59"/></svg></span>HubSpot
+    </div>
+
+    <!-- Pipedrive -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#172B4D"/><path d="M12 5a4.5 4.5 0 1 1 0 9 4.5 4.5 0 0 1 0-9zm0 2a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm1 7.9v4.1h-2v-4.1a6.5 6.5 0 0 1 2 0z" fill="#28D64F"/></svg></span>Pipedrive
+    </div>
+
+    <!-- Google Sheets -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M14.727 0H4.91C4.085 0 3.42.665 3.42 1.49v21.02c0 .825.665 1.49 1.49 1.49h14.18c.825 0 1.49-.665 1.49-1.49V8.727L14.727 0z" fill="#23A566"/><path d="M14.727 0l5.853 8.727h-5.853V0z" fill="#1C8B57"/><path d="M6.545 12.545h10.91v1.364H6.545zm0 2.728h10.91v1.363H6.545zm0 2.727h7.273v1.364H6.545z" fill="white"/></svg></span>Google Sheets
+    </div>
+
+    <!-- Telegram -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#26A5E4"/><path d="M5.491 11.74l11.57-4.461c.537-.194 1.006.131.832.943l.001-.001-1.97 9.281c-.146.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12l-6.871 4.326-2.962-.924c-.643-.204-.657-.643.136-.953z" fill="white"/></svg></span>Telegram Bot
+    </div>
+
+    <!-- Shopify -->
+    <div class="tech-chip">
+      <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M15.337 23.979l7.453-1.667S20.084 7.606 20.063 7.47c-.021-.136-.14-.226-.255-.226s-2.286-.159-2.286-.159-.151-.155-1.524-1.481v-.001c0 0-.976.283-.976.283a8.952 8.952 0 0 0-.479-1.165C14.012 3.479 13.051 3 11.992 3c-.093 0-.186.007-.281.02-.031-.038-.063-.075-.096-.111-.557-.601-1.276-.892-2.133-.868C7.904 2.097 6.339 3.5 5.087 6.084c-.862 1.733-1.516 3.912-1.701 5.603L.86 12.399C.257 12.584 0 12.763 0 13.02v.002L1.621 24l13.716-2.023v.002zM15.337 23.979" fill="#95BF47"/><path d="M22.533 7.24c-.115 0-2.286-.159-2.286-.159s-1.524-1.481-1.524-1.481a.369.369 0 0 0-.208-.097v17.474l7.452-1.667S20.08 7.6 20.063 7.47c-.019-.14-.139-.229-.255-.229h1.725z" fill="#5E8E3E"/><path d="M11.992 7.507l-.838 3.143s-.923-.44-2.025-.37c-1.614.102-1.632 1.117-1.614 1.373.089 1.408 3.783 1.716 3.99 5.018.162 2.596-1.375 4.373-3.588 4.507-2.651.162-4.113-1.4-4.113-1.4l.561-2.392s1.472 1.11 2.648 1.038c.77-.047 1.048-.675 1.021-1.117-.116-1.837-3.125-1.727-3.315-4.745-.161-2.541 1.507-5.112 5.19-5.338 1.418-.088 2.083.271 2.083.271v.012z" fill="white"/></svg></span>Shopify
+    </div>
+
+  </div>
+  </div>
+</section>
+
+<!-- ═══════════ BEFORE & AFTER ═══════════ -->
+<section id="beforeafter">
+  <div class="sec-eyebrow" id="sey9"><span>The Transformation</span></div>
+  <h2 class="sec-h" id="sh9"><span class="line">Before vs</span><span class="line"><span class="acc">After HKB</span></span></h2>
+  <div class="ba-grid" style="position:relative;">
+    <div class="ba-col before">
+      <div class="ba-tag before-tag"><div class="dot"></div>Without HKB</div>
+      <div class="ba-items">
+        <div class="ba-item"><div class="ba-item-icon">😩</div><div class="ba-item-text"><strong>Manual Lead Follow-up</strong>Hours spent copy-pasting leads into spreadsheets and sending emails one by one.</div></div>
+        <div class="ba-item"><div class="ba-item-icon">📋</div><div class="ba-item-text"><strong>Repetitive Data Entry</strong>Your team wastes 3+ hours daily on tasks that add zero business value.</div></div>
+        <div class="ba-item"><div class="ba-item-icon">😴</div><div class="ba-item-text"><strong>Business Sleeps at Night</strong>Leads go cold, support tickets pile up, and opportunities are missed after hours.</div></div>
+        <div class="ba-item"><div class="ba-item-icon">💸</div><div class="ba-item-text"><strong>High Operational Costs</strong>Paying people to do what machines can do faster, cheaper and without errors.</div></div>
+      </div>
+    </div>
+    <div class="ba-col after">
+      <div class="ba-tag after-tag"><div class="dot"></div>With HKB</div>
+      <div class="ba-items">
+        <div class="ba-item"><div class="ba-item-icon">⚡</div><div class="ba-item-text"><strong>Instant Automated Outreach</strong>Every lead gets a personalised follow-up in seconds — zero human effort required.</div></div>
+        <div class="ba-item"><div class="ba-item-icon">🤖</div><div class="ba-item-text"><strong>Zero Data Entry</strong>Data flows automatically between all your tools. Your team focuses on what matters.</div></div>
+        <div class="ba-item"><div class="ba-item-icon">🌙</div><div class="ba-item-text"><strong>Business Runs 24/7</strong>AI agents handle calls, chats, and bookings around the clock while you sleep.</div></div>
+        <div class="ba-item"><div class="ba-item-icon">📈</div><div class="ba-item-text"><strong>6x ROI on Average</strong>Clients save more than they invest within the first month of deployment.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ FAQ ═══════════ -->
+<section id="faq">
+  <div class="sec-eyebrow" id="sey8"><span>Common Questions</span></div>
+  <h2 class="sec-h" id="sh8"><span class="line">Frequently</span><span class="line"><span class="acc">Asked</span></span></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>How long does a typical project take?</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Most projects are completed within 7–14 days depending on complexity. Simple automations can be live in 3–5 days, while full enterprise systems take 2–4 weeks. We always provide a clear timeline before starting.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Do I need any technical knowledge?</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Not at all. We handle everything from architecture to deployment. You simply tell us your goals, approve the blueprint, and we deliver a fully working system with complete documentation you can actually understand.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>What happens after the project is delivered?</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Every project includes lifetime support. If something breaks, we fix it. We also provide full credential handover and video walkthroughs so your team can manage day-to-day operations independently.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>Can you integrate with my existing tools?</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Yes — we specialise in connecting existing tools. Whether it's your CRM, email platform, project management software, or custom database, we build seamless integrations that make everything work together automatically.</p></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)"><span>How are the prices structured?</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>Prices shown are indicative starting points. Every project gets a custom quote based on scope and complexity. Book a free strategy call and we'll give you an exact number with no hidden fees before any work begins.</p></div>
     </div>
   </div>
 </section>
@@ -1148,6 +1675,184 @@ new IntersectionObserver(function(entries){
 });
 
 /* ══════════════════════════════════════════════
+   GRADIENT MESH BACKGROUND
+══════════════════════════════════════════════ */
+(function(){
+  var c=document.getElementById('meshCanvas'),ctx=c.getContext('2d'),W,H,t=0;
+  var blobs=[
+    {x:.15,y:.2,r:.5,col:'rgba(94,79,255,',spd:.00025,ph:0,amp:.08},
+    {x:.8,y:.7,r:.55,col:'rgba(124,106,255,',spd:.0003,ph:1.5,amp:.07},
+    {x:.5,y:.1,r:.45,col:'rgba(80,60,200,',spd:.0002,ph:2.8,amp:.06},
+    {x:.2,y:.8,r:.4,col:'rgba(60,40,180,',spd:.00035,ph:4,amp:.09},
+    {x:.85,y:.25,r:.42,col:'rgba(150,120,255,',spd:.0004,ph:5.2,amp:.07},
+  ];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  function draw(){
+    t++;ctx.clearRect(0,0,W,H);
+    blobs.forEach(function(b){
+      var cx=(b.x+Math.sin(t*b.spd+b.ph)*b.amp)*W;
+      var cy=(b.y+Math.cos(t*b.spd*.8+b.ph)*b.amp*.7)*H;
+      var rm=b.r*Math.min(W,H);
+      var g=ctx.createRadialGradient(cx,cy,0,cx,cy,rm);
+      g.addColorStop(0,b.col+'0.18)');g.addColorStop(.5,b.col+'0.07)');g.addColorStop(1,b.col+'0)');
+      ctx.beginPath();ctx.arc(cx,cy,rm,0,Math.PI*2);ctx.fillStyle=g;ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* SCROLL PROGRESS BAR */
+window.addEventListener('scroll',function(){
+  var pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  document.getElementById('scroll-prog').style.width=pct+'%';
+  document.getElementById('float-cta').classList.toggle('show',window.scrollY>400);
+});
+
+/* TYPEWRITER */
+(function(){
+  var words=['AI Systems','Workflows','Chatbots','Voice Agents','Automations'];
+  var el=document.getElementById('typewriter');
+  if(!el)return;
+  var wi=0,ci=0,deleting=false,paused=false;
+  function type(){
+    if(paused)return;
+    var word=words[wi];
+    if(!deleting){
+      el.textContent=word.slice(0,ci+1);ci++;
+      if(ci===word.length){paused=true;setTimeout(function(){paused=false;deleting=true;type();},1800);return;}
+      setTimeout(type,90);
+    }else{
+      el.textContent=word.slice(0,ci-1);ci--;
+      if(ci===0){deleting=false;wi=(wi+1)%words.length;setTimeout(type,400);return;}
+      setTimeout(type,45);
+    }
+  }
+  setTimeout(type,2500);
+})();
+
+/* MAGNETIC BUTTONS */
+(function(){
+  document.querySelectorAll('.btn-acc,.btn-ghost,.nav-cta').forEach(function(btn){
+    btn.addEventListener('mousemove',function(e){
+      var r=btn.getBoundingClientRect();
+      gsap.to(btn,{x:(e.clientX-r.left-r.width/2)*.35,y:(e.clientY-r.top-r.height/2)*.35,duration:.4,ease:'power2.out'});
+    });
+    btn.addEventListener('mouseleave',function(){
+      gsap.to(btn,{x:0,y:0,duration:.7,ease:'elastic.out(1,.4)'});
+    });
+  });
+})();
+
+/* FAQ ACCORDION */
+function toggleFaq(btn){
+  var item=btn.closest('.faq-item'),isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(function(i){i.classList.remove('open');});
+  if(!isOpen)item.classList.add('open');
+}
+
+/* TECH STACK ANIMATION — staggered pop-in with GSAP */
+(function(){
+  var chips = document.querySelectorAll('.tech-chip');
+  // Set initial state via GSAP so it overrides CSS cleanly
+  gsap.set(chips, {opacity:0, y:50, scale:0.8, rotationX:20});
+
+  ScrollTrigger.create({
+    trigger:'#techGrid',
+    start:'top 82%',
+    onEnter:function(){
+      gsap.to(chips,{
+        opacity:1,
+        y:0,
+        scale:1,
+        rotationX:0,
+        duration:.65,
+        stagger:{
+          each:.07,
+          from:'start',
+          ease:'power2.out'
+        },
+        ease:'back.out(1.6)',
+        onComplete:function(){
+          // After all chips land, trigger shimmer sweep via class
+          chips.forEach(function(c,i){
+            setTimeout(function(){c.classList.add('vis');},i*70);
+          });
+        }
+      });
+    }
+  });
+})();
+['sey7','sey8'].forEach(function(id){
+  var el=document.getElementById(id);if(!el)return;
+  ScrollTrigger.create({trigger:el,start:'top 85%',onEnter:function(){
+    el.classList.add('active');
+    gsap.to(el.querySelector('span'),{y:'0%',opacity:1,duration:.7,ease:'power3.out'});
+  }});
+});
+['sh7','sh8'].forEach(function(id){
+  var el=document.getElementById(id);if(!el)return;
+  gsap.to(el.querySelectorAll('.line'),{y:'0%',opacity:1,duration:1,stagger:.1,ease:'power4.out',scrollTrigger:{trigger:el,start:'top 82%'}});
+});
+gsap.from('.faq-item',{opacity:0,y:30,duration:.6,stagger:.1,ease:'power3.out',scrollTrigger:{trigger:'.faq-list',start:'top 82%'}});
+
+/* ══════════════════════════════════════════════
+   CHAT WIDGET
+══════════════════════════════════════════════ */
+(function(){
+  setTimeout(function(){
+    var btn=document.getElementById('chat-btn');
+    if(btn)btn.classList.add('show');
+    setTimeout(function(){
+      var b=document.getElementById('chatBubble');
+      if(b)b.classList.add('show');
+    },600);
+  },3500);
+})();
+
+/* ══════════════════════════════════════════════
+   EXIT INTENT POPUP
+══════════════════════════════════════════════ */
+(function(){
+  var shown=false;
+  document.addEventListener('mouseleave',function(e){
+    if(e.clientY<=0&&!shown){shown=true;document.getElementById('exit-overlay').classList.add('show');}
+  });
+  var maxScroll=0;
+  window.addEventListener('scroll',function(){
+    var s=window.scrollY;
+    if(s>maxScroll)maxScroll=s;
+    if(maxScroll>500&&s<maxScroll*0.25&&!shown){shown=true;document.getElementById('exit-overlay').classList.add('show');}
+  });
+})();
+function closeExit(){document.getElementById('exit-overlay').classList.remove('show');}
+document.addEventListener('DOMContentLoaded',function(){
+  var ov=document.getElementById('exit-overlay');
+  if(ov)ov.addEventListener('click',function(e){if(e.target===this)closeExit();});
+});
+
+/* ══════════════════════════════════════════════
+   BEFORE & AFTER
+══════════════════════════════════════════════ */
+ScrollTrigger.create({
+  trigger:'#beforeafter',start:'top 78%',
+  onEnter:function(){
+    document.querySelectorAll('.ba-col.before .ba-item').forEach(function(el,i){setTimeout(function(){el.classList.add('vis');},i*130);});
+    document.querySelectorAll('.ba-col.after .ba-item').forEach(function(el,i){setTimeout(function(){el.classList.add('vis');},i*130+250);});
+  }
+});
+['sey9'].forEach(function(id){
+  var el=document.getElementById(id);if(!el)return;
+  ScrollTrigger.create({trigger:el,start:'top 85%',onEnter:function(){
+    el.classList.add('active');
+    gsap.to(el.querySelector('span'),{y:'0%',opacity:1,duration:.7,ease:'power3.out'});
+  }});
+});
+var sh9=document.getElementById('sh9');
+if(sh9)gsap.to(sh9.querySelectorAll('.line'),{y:'0%',opacity:1,duration:1,stagger:.1,ease:'power4.out',scrollTrigger:{trigger:sh9,start:'top 82%'}});
+
+/* ══════════════════════════════════════════════
    MODAL
 ══════════════════════════════════════════════ */
 function openModal(src){
@@ -1161,5 +1866,40 @@ function closeModal(){
 }
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 </script>
+<!-- LIVE CHAT WIDGET -->
+<div id="chat-widget">
+  <div class="chat-bubble" id="chatBubble">
+    <strong>👋 Hamza — THE HKB</strong>
+    Got a question? I usually reply within a few hours. Let's talk about your automation goals!
+  </div>
+  <a href="https://wa.me/923001794940?text=Hi%20Hamza%2C%20I%20visited%20your%20portfolio%20and%20want%20to%20discuss%20automation%20for%20my%20business." target="_blank" id="chat-btn">
+    <div class="chat-avatar">💬</div>
+    Chat on WhatsApp
+    <div class="chat-online"></div>
+  </a>
+</div>
+
+<!-- EXIT INTENT POPUP -->
+<div id="exit-overlay">
+  <div id="exit-popup">
+    <button class="exit-close" onclick="closeExit()">✕</button>
+    <span class="exit-emoji">⚡</span>
+    <div class="exit-tag">Wait — Special Offer</div>
+    <h2 class="exit-h">Before You Go —<br><span>Get a Free Strategy Call</span></h2>
+    <p class="exit-p">Book a free 30-minute strategy call and we'll map out exactly how automation can transform your operations — no commitment, no cost.</p>
+    <div class="exit-offer">
+      <div class="exit-offer-icon">🎁</div>
+      <div class="exit-offer-text">
+        <strong>Free Automation Audit</strong>
+        We'll analyse your current workflow and identify 3 quick wins you can implement immediately — valued at $200, completely free.
+      </div>
+    </div>
+    <div class="exit-btns">
+      <a href="https://cal.com/hamza-khalil-expyr5/meeting-for-automations" target="_blank" class="exit-cta" onclick="closeExit()">Claim My Free Strategy Call</a>
+      <button class="exit-skip" onclick="closeExit()">No thanks, I don't need more efficiency</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
